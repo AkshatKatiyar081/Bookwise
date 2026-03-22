@@ -1,0 +1,92 @@
+<div>
+  <div class="page-header">
+    <h1 ng-if="book">{{book.title}}</h1>
+    <a href="#!/books" class="btn btn-outline">← Back to Catalog</a>
+  </div>
+
+  <div class="loading-state" ng-if="loading">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <div class="alert alert-error" ng-if="error">{{error}}</div>
+  <div class="alert alert-success" ng-if="reserveSuccess">{{reserveSuccess}}</div>
+
+  <div ng-if="book && !loading">
+    <!-- Book Details Card -->
+    <div class="card mb-lg">
+      <h3 class="card-header">Book Details</h3>
+      <div class="detail-grid">
+        <div class="detail-row">
+          <div class="detail-label">Title</div>
+          <div class="detail-value">{{book.title}}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Author</div>
+          <div class="detail-value">{{book.author}}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">ISBN</div>
+          <div class="detail-value">{{book.isbn}}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Genre</div>
+          <div class="detail-value">{{book.genre || '—'}}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Publisher</div>
+          <div class="detail-value">{{book.publisher || '—'}}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Published Year</div>
+          <div class="detail-value">{{book.published_year || '—'}}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Shelf Location</div>
+          <div class="detail-value">{{book.shelf_location || '—'}}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Availability</div>
+          <div class="detail-value">
+            <span class="copies-available" ng-class="{'has-copies': book.available_copies > 0, 'no-copies': book.available_copies === 0}">
+              {{book.available_copies}} of {{book.total_copies}} available
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px;" ng-if="isLoggedIn && !isAdmin && book.available_copies === 0">
+        <button class="btn btn-secondary" ng-click="reserveBook()">🔖 Reserve This Book</button>
+      </div>
+      <div style="margin-top: 20px;" ng-if="isAdmin">
+        <a href="#!/books/{{book.book_id}}/edit" class="btn btn-primary">Edit Book</a>
+      </div>
+    </div>
+
+    <!-- Borrow History -->
+    <div class="card" ng-if="book.borrow_history && book.borrow_history.length > 0">
+      <h3 class="card-header">Borrow History</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Member</th>
+            <th>Borrow Date</th>
+            <th>Due Date</th>
+            <th>Return Date</th>
+            <th>Status</th>
+            <th>Fine</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="h in book.borrow_history">
+            <td>{{h.member_name}}</td>
+            <td>{{h.borrow_date | date:'dd MMM yyyy'}}</td>
+            <td>{{h.due_date | date:'dd MMM yyyy'}}</td>
+            <td>{{h.return_date ? (h.return_date | date:'dd MMM yyyy') : '—'}}</td>
+            <td><span class="badge badge-{{h.status}}">{{h.status}}</span></td>
+            <td>{{h.fine_amount > 0 ? '₹' + h.fine_amount : '—'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

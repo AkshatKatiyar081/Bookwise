@@ -1,0 +1,118 @@
+<div>
+  <div class="page-header">
+    <h1>Borrow Records</h1>
+    <button class="btn btn-primary" ng-click="openIssueForm()" ng-if="isAdmin">📤 Issue Book</button>
+  </div>
+
+  <div class="alert alert-error" ng-if="error">{{error}}</div>
+  <div class="alert alert-success" ng-if="success">{{success}}</div>
+
+  <!-- Status Filters -->
+  <div class="filter-bar">
+    <span class="text-muted" style="font-size: 0.85rem; margin-right: 8px;">Filter:</span>
+    <button class="filter-btn" ng-class="{active: statusFilter === ''}" ng-click="filterBy('')">All</button>
+    <button class="filter-btn" ng-class="{active: statusFilter === 'borrowed'}" ng-click="filterBy('borrowed')">Borrowed</button>
+    <button class="filter-btn" ng-class="{active: statusFilter === 'returned'}" ng-click="filterBy('returned')">Returned</button>
+    <button class="filter-btn" ng-class="{active: statusFilter === 'overdue'}" ng-click="filterBy('overdue')">Overdue</button>
+  </div>
+
+  <div class="loading-state" ng-if="loading">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <!-- Records Table -->
+  <div class="table-wrap" ng-if="!loading">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Member</th>
+          <th>Book</th>
+          <th>Borrow Date</th>
+          <th>Due Date</th>
+          <th>Return Date</th>
+          <th>Status</th>
+          <th>Fine</th>
+          <th ng-if="isAdmin">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="r in records">
+          <td>{{r.member_name}}</td>
+          <td>{{r.title}}</td>
+          <td>{{formatDate(r.borrow_date)}}</td>
+          <td>{{formatDate(r.due_date)}}</td>
+          <td>{{r.return_date ? formatDate(r.return_date) : '—'}}</td>
+          <td><span class="badge badge-{{r.status}}">{{r.status}}</span></td>
+          <td>{{r.fine_amount > 0 ? '₹' + r.fine_amount : '—'}}</td>
+          <td ng-if="isAdmin">
+            <button class="btn btn-sm btn-success" ng-click="openReturnModal(r)" ng-if="r.status === 'borrowed' || r.status === 'overdue'">
+              Return
+            </button>
+          </td>
+        </tr>
+        <tr ng-if="records.length === 0">
+          <td colspan="8" class="text-center text-muted" style="padding: 32px;">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Issue Book Modal -->
+  <div class="modal-overlay" ng-if="showIssueForm" ng-click="closeIssueForm()">
+    <div class="modal-box" ng-click="$event.stopPropagation()" style="max-width: 520px;">
+      <h3>Issue a Book</h3>
+      <form ng-submit="issueBook()" style="margin-top: 16px;">
+        <div class="form-group">
+          <label>Select Member *</label>
+          <select class="form-control" ng-model="issueForm.member_id">
+            <option value="">— Choose member —</option>
+            <option ng-repeat="m in members" value="{{m.member_id}}">{{m.name}} ({{m.email}})</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Select Book *</label>
+          <select class="form-control" ng-model="issueForm.book_id">
+            <option value="">— Choose book —</option>
+            <option ng-repeat="b in books" value="{{b.book_id}}">{{b.title}} — {{b.author}} ({{b.available_copies}} avail.)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Due Date</label>
+          <input type="date" class="form-control" ng-model="issueForm.due_date">
+          <span class="text-muted" style="font-size: 0.8rem;">Leave blank for default 14 days</span>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" ng-click="closeIssueForm()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Issue Book</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Return Book Modal -->
+  <div class="modal-overlay" ng-if="showReturnModal" ng-click="closeReturnModal()">
+    <div class="modal-box" ng-click="$event.stopPropagation()">
+      <h3>Return Book</h3>
+      <div ng-if="!returnResult">
+        <p style="margin: 16px 0;">
+          Return <strong>{{recordToReturn.title}}</strong> borrowed by <strong>{{recordToReturn.member_name}}</strong>?
+        </p>
+        <p class="text-muted">Due date: {{formatDate(recordToReturn.due_date)}}</p>
+        <div class="modal-actions">
+          <button class="btn btn-outline" ng-click="closeReturnModal()">Cancel</button>
+          <button class="btn btn-success" ng-click="returnBook()">Confirm Return</button>
+        </div>
+      </div>
+      <div ng-if="returnResult" style="margin-top: 16px;">
+        <div class="alert alert-success">{{returnResult.message}}</div>
+        <div ng-if="returnResult.fine_amount > 0" class="alert alert-warning">
+          ⚠️ This book was <strong>{{returnResult.days_overdue}} days</strong> overdue.
+          A fine of <strong>₹{{returnResult.fine_amount}}</strong> has been charged.
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-primary" ng-click="closeReturnModal()">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

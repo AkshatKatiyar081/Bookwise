@@ -1,0 +1,79 @@
+<div>
+  <div class="page-header">
+    <h1>Book Catalog</h1>
+    <a href="#!/books/add" class="btn btn-primary" ng-if="isAdmin">➕ Add New Book</a>
+  </div>
+
+  <div class="alert alert-error" ng-if="error">{{error}}</div>
+
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <div class="search-input-wrap">
+      <input type="text" class="form-control" ng-model="searchQuery"
+             placeholder="Search by title, author, or ISBN..."
+             ng-keyup="$event.keyCode === 13 && search()">
+    </div>
+    <button class="btn btn-primary" ng-click="search()">Search</button>
+    <button class="btn btn-outline" ng-click="clearSearch()" ng-if="searchQuery">Clear</button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-state" ng-if="loading">
+    <div class="loading-spinner"></div>
+    <p>Loading books...</p>
+  </div>
+
+  <!-- Books Table -->
+  <div class="table-wrap" ng-if="!loading">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>ISBN</th>
+          <th>Genre</th>
+          <th>Available</th>
+          <th ng-if="isAdmin">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="book in books">
+          <td><a href="#!/books/{{book.book_id}}">{{book.title}}</a></td>
+          <td>{{book.author}}</td>
+          <td class="text-muted">{{book.isbn}}</td>
+          <td>{{book.genre || '—'}}</td>
+          <td>
+            <span class="copies-available" ng-class="{'has-copies': book.available_copies > 0, 'no-copies': book.available_copies === 0}">
+              {{book.available_copies}}/{{book.total_copies}}
+            </span>
+          </td>
+          <td ng-if="isAdmin">
+            <div class="btn-group">
+              <a href="#!/books/{{book.book_id}}/edit" class="btn btn-sm btn-outline">Edit</a>
+              <button class="btn btn-sm btn-danger" ng-click="confirmDelete(book)">Delete</button>
+            </div>
+          </td>
+        </tr>
+        <tr ng-if="books.length === 0">
+          <td colspan="6" class="text-center text-muted" style="padding: 32px;">
+            <div class="empty-icon">📚</div>
+            No books found
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-overlay" ng-if="showDeleteModal" ng-click="cancelDelete()">
+    <div class="modal-box" ng-click="$event.stopPropagation()">
+      <h3>Delete Book</h3>
+      <p>Are you sure you want to delete <strong>{{bookToDelete.title}}</strong>?</p>
+      <p class="text-muted" style="font-size: 0.85rem;">This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn btn-outline" ng-click="cancelDelete()">Cancel</button>
+        <button class="btn btn-danger" ng-click="deleteBook()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

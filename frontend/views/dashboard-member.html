@@ -1,0 +1,95 @@
+<div>
+  <div class="page-header">
+    <h1>My Dashboard</h1>
+    <span class="text-muted">Your library overview</span>
+  </div>
+
+  <div class="loading-state" ng-if="loading">
+    <div class="loading-spinner"></div>
+    <p>Loading dashboard...</p>
+  </div>
+
+  <div class="member-dash-grid" ng-if="!loading">
+    <!-- Main Column -->
+    <div>
+      <!-- Currently Borrowed -->
+      <div class="card mb-lg">
+        <h3 class="card-header">📖 Currently Borrowed</h3>
+        <div ng-if="currentBorrows().length === 0" class="empty-state">
+          <p class="text-muted">You have no books checked out</p>
+        </div>
+        <table class="data-table" ng-if="currentBorrows().length > 0">
+          <thead>
+            <tr>
+              <th>Book</th>
+              <th>Author</th>
+              <th>Due Date</th>
+              <th>Days Left</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="b in currentBorrows()">
+              <td><a href="#!/books/{{b.book_id}}">{{b.title}}</a></td>
+              <td>{{b.author}}</td>
+              <td>{{b.due_date | date:'dd MMM yyyy'}}</td>
+              <td>
+                <span class="due-countdown"
+                      ng-class="{'overdue': daysUntilDue(b.due_date) < 0, 'due-soon': daysUntilDue(b.due_date) >= 0 && daysUntilDue(b.due_date) <= 3, 'safe': daysUntilDue(b.due_date) > 3}">
+                  <span ng-if="daysUntilDue(b.due_date) >= 0">{{daysUntilDue(b.due_date)}} days</span>
+                  <span ng-if="daysUntilDue(b.due_date) < 0">{{-daysUntilDue(b.due_date)}} days overdue</span>
+                </span>
+              </td>
+              <td><span class="badge badge-{{b.status}}">{{b.status}}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Reservations -->
+      <div class="card" ng-if="reservations.length > 0">
+        <h3 class="card-header">🔖 My Reservations</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Book</th>
+              <th>Reserved On</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="r in reservations">
+              <td>{{r.title}}</td>
+              <td>{{r.reservation_date | date:'dd MMM yyyy'}}</td>
+              <td><span class="badge badge-{{r.status}}">{{r.status}}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Sidebar Column -->
+    <div>
+      <!-- Fine Balance -->
+      <div class="card mb-lg">
+        <h3 class="card-header">💰 Fine Balance</h3>
+        <div class="text-center" style="padding: 16px 0;">
+          <div class="fine-balance" ng-class="{'has-fines': totalUnpaidFines() > 0, 'no-fines': totalUnpaidFines() === 0}">
+            ₹{{totalUnpaidFines().toFixed(2)}}
+          </div>
+          <p class="text-muted mt-sm" ng-if="totalUnpaidFines() === 0">All clear! No pending fines.</p>
+          <p class="text-muted mt-sm" ng-if="totalUnpaidFines() > 0">Outstanding balance</p>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="card">
+        <h3 class="card-header">🔗 Quick Links</h3>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <a href="#!/books" class="btn btn-secondary" style="justify-content: center;">Browse Catalog</a>
+          <a href="#!/my-fines" class="btn btn-outline" style="justify-content: center;">View Fine History</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

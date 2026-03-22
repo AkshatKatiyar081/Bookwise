@@ -1,0 +1,49 @@
+<div>
+  <div class="page-header">
+    <h1>Reservations</h1>
+  </div>
+
+  <div class="alert alert-error" ng-if="error">{{error}}</div>
+  <div class="alert alert-success" ng-if="success">{{success}}</div>
+
+  <div class="loading-state" ng-if="loading">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <div class="table-wrap" ng-if="!loading">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Book</th>
+          <th>Author</th>
+          <th ng-if="isAdmin">Member</th>
+          <th>Reserved On</th>
+          <th>Status</th>
+          <th ng-if="isAdmin">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="r in reservations">
+          <td><a href="#!/books/{{r.book_id}}">{{r.title}}</a></td>
+          <td>{{r.author}}</td>
+          <td ng-if="isAdmin">{{r.member_name}}</td>
+          <td>{{formatDate(r.reservation_date)}}</td>
+          <td><span class="badge badge-{{r.status}}">{{r.status}}</span></td>
+          <td ng-if="isAdmin">
+            <div class="btn-group" ng-if="r.status === 'pending'">
+              <button class="btn btn-sm btn-success" ng-click="updateReservation(r.reservation_id, 'fulfilled')">Fulfil</button>
+              <button class="btn btn-sm btn-danger" ng-click="updateReservation(r.reservation_id, 'cancelled')">Cancel</button>
+            </div>
+            <span class="text-muted" ng-if="r.status !== 'pending'">—</span>
+          </td>
+        </tr>
+        <tr ng-if="reservations.length === 0">
+          <td colspan="6" class="text-center text-muted" style="padding: 32px;">
+            <div class="empty-icon">🔖</div>
+            No reservations found
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

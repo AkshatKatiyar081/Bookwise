@@ -1,0 +1,176 @@
+/* ============================================
+   Dashboard-Specific Styles
+   ============================================ */
+
+/* --- Stat Cards Row --- */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+.stat-card.card-books::before { background: var(--accent); }
+.stat-card.card-members::before { background: var(--info); }
+.stat-card.card-borrowed::before { background: var(--warning); }
+.stat-card.card-overdue::before { background: var(--danger); }
+.stat-card.card-fines::before { background: var(--success); }
+
+.stat-icon {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-sm);
+}
+
+.stat-value {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: var(--space-xs);
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* Color variations */
+.stat-card.card-overdue .stat-value { color: var(--danger); }
+.stat-card.card-fines .stat-value { color: var(--success); }
+
+/* --- Quick Actions --- */
+.quick-actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.quick-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 10px 20px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  text-decoration: none;
+}
+
+.quick-action-btn:hover {
+  background: var(--accent-hover);
+  color: #fff;
+}
+
+.quick-action-btn.secondary {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+.quick-action-btn.secondary:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* --- Section Title --- */
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  margin-bottom: var(--space-md);
+  color: var(--text-primary);
+}
+
+/* --- Member Dashboard --- */
+.member-dash-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-lg);
+}
+
+.member-dash-grid .card {
+  height: fit-content;
+}
+
+.due-countdown {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.due-countdown.due-soon {
+  color: var(--warning);
+}
+
+.due-countdown.overdue {
+  color: var(--danger);
+}
+
+.due-countdown.safe {
+  color: var(--success);
+}
+
+.fine-balance {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.fine-balance.has-fines {
+  color: var(--danger);
+}
+
+.fine-balance.no-fines {
+  color: var(--success);
+}
+
+/* --- Responsive Dashboard --- */
+@media (max-width: 900px) {
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .member-dash-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-actions {
+    flex-direction: column;
+  }
+
+  .quick-action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

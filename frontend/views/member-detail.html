@@ -1,0 +1,101 @@
+<div>
+  <div class="page-header">
+    <h1 ng-if="member">{{member.name}}</h1>
+    <a href="#!/members" class="btn btn-outline" ng-if="isAdmin">← Back to Members</a>
+  </div>
+
+  <div class="loading-state" ng-if="loading">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <div class="alert alert-error" ng-if="error">{{error}}</div>
+
+  <div ng-if="member && !loading">
+    <!-- Profile Card -->
+    <div class="card mb-lg">
+      <h3 class="card-header">Profile Information</h3>
+      <div class="detail-grid">
+        <div class="detail-row">
+          <div class="detail-label">Full Name</div>
+          <div class="detail-value">{{member.name}}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Email</div>
+          <div class="detail-value">{{member.email}}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Phone</div>
+          <div class="detail-value">{{member.phone || '—'}}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Address</div>
+          <div class="detail-value">{{member.address || '—'}}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Membership Type</div>
+          <div class="detail-value"><span class="badge badge-{{member.membership_type}}">{{member.membership_type}}</span></div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Status</div>
+          <div class="detail-value"><span class="badge badge-{{member.status}}">{{member.status}}</span></div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Member Since</div>
+          <div class="detail-value">{{member.membership_date | date:'dd MMM yyyy'}}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Borrow History -->
+    <div class="card mb-lg" ng-if="member.borrows && member.borrows.length > 0">
+      <h3 class="card-header">📚 Borrow History</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Book</th>
+            <th>Author</th>
+            <th>Borrow Date</th>
+            <th>Due Date</th>
+            <th>Return Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="b in member.borrows">
+            <td><a href="#!/books/{{b.book_id}}">{{b.title}}</a></td>
+            <td>{{b.author}}</td>
+            <td>{{b.borrow_date | date:'dd MMM yyyy'}}</td>
+            <td>{{b.due_date | date:'dd MMM yyyy'}}</td>
+            <td>{{b.return_date ? (b.return_date | date:'dd MMM yyyy') : '—'}}</td>
+            <td><span class="badge badge-{{b.status}}">{{b.status}}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Fines -->
+    <div class="card" ng-if="member.fines && member.fines.length > 0">
+      <h3 class="card-header">💰 Fine History</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Book</th>
+            <th>Amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="f in member.fines">
+            <td>{{f.title}}</td>
+            <td>₹{{f.amount}}</td>
+            <td>
+              <span class="badge" ng-class="{'badge-returned': f.paid, 'badge-overdue': !f.paid}">
+                {{f.paid ? 'Paid' : 'Unpaid'}}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

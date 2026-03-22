@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="LibraryApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookwise — Library Management System</title>
+  <meta name="description" content="Bookwise Library Management System — Browse, borrow, and manage your college library catalog.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="top-navbar" ng-controller="NavCtrl">
+    <div class="nav-inner">
+      <a href="#!/" class="nav-brand">
+        <span class="brand-icon">📚</span>
+        <span class="brand-text">Bookwise</span>
+      </a>
+      
+      <!-- Nav Links (visible when logged in) -->
+      <div class="nav-pills" ng-if="isLoggedIn()">
+        <!-- Admin/Librarian Nav -->
+        <div ng-if="isAdmin()" class="pill-group">
+          <a href="#!/dashboard" class="nav-pill" ng-class="{active: isActive('/dashboard')}">Dashboard</a>
+          <a href="#!/books" class="nav-pill" ng-class="{active: isActive('/books')}">Books</a>
+          <a href="#!/members" class="nav-pill" ng-class="{active: isActive('/members')}">Members</a>
+          <a href="#!/borrow" class="nav-pill" ng-class="{active: isActive('/borrow')}">Borrow</a>
+          <a href="#!/reservations" class="nav-pill" ng-class="{active: isActive('/reservations')}">Reservations</a>
+          <a href="#!/fines" class="nav-pill" ng-class="{active: isActive('/fines')}">Fines</a>
+        </div>
+        <!-- Member Nav -->
+        <div ng-if="!isAdmin()" class="pill-group">
+          <a href="#!/my-dashboard" class="nav-pill" ng-class="{active: isActive('/my-dashboard')}">My Dashboard</a>
+          <a href="#!/books" class="nav-pill" ng-class="{active: isActive('/books')}">Catalog</a>
+          <a href="#!/my-reservations" class="nav-pill" ng-class="{active: isActive('/my-reservations')}">Reservations</a>
+          <a href="#!/my-fines" class="nav-pill" ng-class="{active: isActive('/my-fines')}">Fines</a>
+        </div>
+      </div>
+
+      <!-- Right Side -->
+      <div class="nav-right">
+        <div ng-if="isLoggedIn()" class="user-menu">
+          <span class="user-greeting">{{currentUser().name}}</span>
+          <span class="user-role-badge">{{currentUser().role}}</span>
+          <button class="btn-logout" ng-click="logout()">Logout</button>
+        </div>
+        <div ng-if="!isLoggedIn()" class="auth-pills">
+          <a href="#!/login" class="nav-pill" ng-class="{active: isActive('/login')}">Login</a>
+          <a href="#!/register" class="nav-pill pill-accent">Register</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <div ng-view class="view-container"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>&copy; 2026 Bookwise Library &middot; College Library Management System</p>
+  </footer>
+
+  <!-- AngularJS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular-route.min.js"></script>
+  
+  <!-- App -->
+  <script src="app.js"></script>
+  
+  <!-- Controllers -->
+  <script src="controllers/auth.controller.js"></script>
+  <script src="controllers/books.controller.js"></script>
+  <script src="controllers/members.controller.js"></script>
+  <script src="controllers/borrow.controller.js"></script>
+  <script src="controllers/fines.controller.js"></script>
+</body>
+</html>

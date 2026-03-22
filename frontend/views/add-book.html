@@ -1,0 +1,79 @@
+<div>
+  <div class="page-header">
+    <h1>{{isEditing ? 'Edit Book' : 'Add New Book'}}</h1>
+    <a href="#!/books" class="btn btn-outline">← Back to Catalog</a>
+  </div>
+
+  <div class="alert alert-error" ng-if="error">{{error}}</div>
+  <div class="alert alert-success" ng-if="success">{{success}}</div>
+
+  <div class="loading-state" ng-if="loading">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <div class="form-card form-card-wide" ng-if="!loading">
+    <form ng-submit="saveBook()" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="book-title">Book Title *</label>
+          <input type="text" id="book-title" class="form-control" ng-model="bookForm.title"
+                 placeholder="e.g. To Kill a Mockingbird" required>
+        </div>
+        <div class="form-group">
+          <label for="book-author">Author *</label>
+          <input type="text" id="book-author" class="form-control" ng-model="bookForm.author"
+                 placeholder="e.g. Harper Lee" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="book-isbn">ISBN *</label>
+          <input type="text" id="book-isbn" class="form-control" ng-model="bookForm.isbn"
+                 placeholder="e.g. 978-0061120084" required>
+        </div>
+        <div class="form-group">
+          <label for="book-genre">Genre</label>
+          <input type="text" id="book-genre" class="form-control" ng-model="bookForm.genre"
+                 placeholder="e.g. Fiction, Science, History">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="book-publisher">Publisher</label>
+          <input type="text" id="book-publisher" class="form-control" ng-model="bookForm.publisher"
+                 placeholder="e.g. Penguin Books">
+        </div>
+        <div class="form-group">
+          <label for="book-year">Published Year</label>
+          <input type="number" id="book-year" class="form-control" ng-model="bookForm.published_year"
+                 placeholder="e.g. 2020" min="1800" max="2030">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="book-copies">Total Copies</label>
+          <input type="number" id="book-copies" class="form-control" ng-model="bookForm.total_copies"
+                 min="1" placeholder="1">
+        </div>
+        <div class="form-group">
+          <label for="book-shelf">Shelf Location</label>
+          <input type="text" id="book-shelf" class="form-control" ng-model="bookForm.shelf_location"
+                 placeholder="e.g. A-101">
+        </div>
+      </div>
+
+      <div class="form-group" ng-if="isEditing">
+        <label for="book-available">Available Copies</label>
+        <input type="number" id="book-available" class="form-control" ng-model="bookForm.available_copies"
+               min="0">
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 8px;">
+        {{isEditing ? 'Update Book' : 'Add Book'}}
+      </button>
+    </form>
+  </div>
+</div>
