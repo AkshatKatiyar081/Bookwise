@@ -114,7 +114,8 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     })
     .when('/books', {
       templateUrl: 'views/books-list.html',
-      controller: 'BooksCtrl'
+      controller: 'BooksCtrl',
+      resolve: { auth: requireAuth }
     })
     .when('/books/add', {
       templateUrl: 'views/add-book.html',
@@ -123,7 +124,8 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     })
     .when('/books/:id', {
       templateUrl: 'views/book-detail.html',
-      controller: 'BookDetailCtrl'
+      controller: 'BookDetailCtrl',
+      resolve: { auth: requireAuth }
     })
     .when('/books/:id/edit', {
       templateUrl: 'views/add-book.html',

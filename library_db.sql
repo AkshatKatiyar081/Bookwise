@@ -33,7 +33,7 @@ CREATE TABLE members (
   phone NVARCHAR(15),
   address NVARCHAR(MAX),
   membership_date DATE DEFAULT CAST(GETDATE() AS DATE),
-  membership_type NVARCHAR(20) DEFAULT 'student' CHECK (membership_type IN ('student', 'faculty', 'public')),
+  membership_type NVARCHAR(20) DEFAULT 'student' CHECK (membership_type IN ('student', 'faculty')),
   status NVARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'suspended')),
   password NVARCHAR(255) NOT NULL
 );
@@ -145,7 +145,7 @@ INSERT INTO members (name, email, phone, address, membership_type, password) VAL
 ('Priya Patel', 'priya@college.edu', '9876543211', '45 University Ave, Mumbai', 'student', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'),
 ('Dr. Meena Iyer', 'meena@college.edu', '9876543212', '78 Faculty Block, Bangalore', 'faculty', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'),
 ('Rahul Verma', 'rahul@college.edu', '9876543213', '23 Hostel Wing B, Chennai', 'student', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'),
-('Sneha Gupta', 'sneha@college.edu', '9876543214', '56 PG Block, Hyderabad', 'public', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
+('Sneha Gupta', 'sneha@college.edu', '9876543214', '56 PG Block, Hyderabad', 'student', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
 GO
 
 -- Sample Borrow Records

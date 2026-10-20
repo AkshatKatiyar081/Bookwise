@@ -11,12 +11,12 @@ async function getDb() {
       filename: path.join(__dirname, '..', 'library.sqlite'),
       driver: sqlite3.Database
     }).then(async (db) => {
-      console.log('✓ SQLite database connected');
+      console.log('SQLite database connected');
       // Enable foreign keys
       await db.run('PRAGMA foreign_keys = ON');
       return db;
     }).catch(err => {
-      console.error('✗ SQLite connection failed:', err);
+      console.error('SQLite connection failed:', err);
       process.exit(1);
     });
   }

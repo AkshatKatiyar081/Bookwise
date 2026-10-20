@@ -58,6 +58,9 @@ exports.register = async (req, res) => {
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Name, email, and password are required.' });
     }
+    if (membership_type && !['student', 'faculty'].includes(membership_type)) {
+      return res.status(400).json({ error: 'Membership type must be student or faculty.' });
+    }
 
     const existingMembers = await db.query('SELECT member_id FROM members WHERE email = ?', [email]);
     const existingAdmins = await db.query('SELECT admin_id FROM admins WHERE email = ?', [email]);

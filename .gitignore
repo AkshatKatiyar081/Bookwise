@@ -3,3 +3,12 @@ node_modules/
 library.sqlite
 *.log
 .DS_Store
+
+# Local lab documents and diagram files — keep off VCS
+Lab_Experiments/
+deliverables/
+SE.md
+se_template.pptx
+*.pptx
+*.docx
+~$*

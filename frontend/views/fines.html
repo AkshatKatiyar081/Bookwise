@@ -49,12 +49,12 @@
             <button class="btn btn-sm btn-success" ng-click="payFine(f.fine_id)" ng-if="!f.paid">
               Mark Paid
             </button>
-            <span class="text-muted" ng-if="f.paid">✓</span>
+            <span class="text-muted" ng-if="f.paid"></span>
           </td>
         </tr>
         <tr ng-if="fines.length === 0">
           <td colspan="6" class="text-center text-muted" style="padding: 32px;">
-            <div class="empty-icon">💰</div>
+            <div class="empty-icon"></div>
             No fines found
           </td>
         </tr>

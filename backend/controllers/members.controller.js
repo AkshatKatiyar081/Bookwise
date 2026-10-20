@@ -52,6 +52,9 @@ exports.create = async (req, res) => {
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Name, email, and password are required.' });
     }
+    if (membership_type && !['student', 'faculty'].includes(membership_type)) {
+      return res.status(400).json({ error: 'Membership type must be student or faculty.' });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const result = await db.execute(
@@ -73,6 +76,9 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     const { name, email, phone, address, membership_type, status } = req.body;
+    if (membership_type && !['student', 'faculty'].includes(membership_type)) {
+      return res.status(400).json({ error: 'Membership type must be student or faculty.' });
+    }
     const result = await db.execute(
       'UPDATE members SET name=?, email=?, phone=?, address=?, membership_type=?, status=? WHERE member_id=?',
       [name, email, phone, address, membership_type, status, req.params.id]

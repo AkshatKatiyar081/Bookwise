@@ -40,6 +40,22 @@ exports.issueBook = async (req, res) => {
 
     await sqliteDb.run('BEGIN TRANSACTION');
 
+    // Member eligibility: the member must exist, be active and have no unpaid fines
+    const members = await sqliteDb.all('SELECT status FROM members WHERE member_id = ?', [member_id]);
+    if (members.length === 0) {
+      await sqliteDb.run('ROLLBACK');
+      return res.status(404).json({ error: 'Member not found.' });
+    }
+    if (members[0].status !== 'active') {
+      await sqliteDb.run('ROLLBACK');
+      return res.status(400).json({ error: 'Member account is ' + members[0].status + '.' });
+    }
+    const unpaid = await sqliteDb.all('SELECT COUNT(*) as count FROM fines WHERE member_id = ? AND paid = 0', [member_id]);
+    if (unpaid[0].count > 0) {
+      await sqliteDb.run('ROLLBACK');
+      return res.status(400).json({ error: 'Member has unpaid fines.' });
+    }
+
     const books = await sqliteDb.all('SELECT available_copies FROM books WHERE book_id = ?', [book_id]);
 
     if (books.length === 0) {

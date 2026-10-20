@@ -36,7 +36,7 @@ async function setupDatabase() {
         phone TEXT,
         address TEXT,
         membership_date DATE DEFAULT CURRENT_DATE,
-        membership_type TEXT DEFAULT 'student' CHECK(membership_type IN ('student', 'faculty', 'public')),
+        membership_type TEXT DEFAULT 'student' CHECK(membership_type IN ('student', 'faculty')),
         status TEXT DEFAULT 'active' CHECK(status IN ('active', 'inactive', 'suspended')),
         password TEXT NOT NULL
       );
@@ -98,7 +98,7 @@ async function setupDatabase() {
       );
     `);
 
-    console.log('✓ All 6 tables created');
+    console.log('All 6 tables created');
 
     console.log('Inserting seed data...');
     // Seed Admins
@@ -130,7 +130,7 @@ async function setupDatabase() {
     await insertMember.run(['Priya Patel', 'priya@college.edu', '9876543211', '45 University Ave, Mumbai', 'student', hashMember]);
     await insertMember.run(['Dr. Meena Iyer', 'meena@college.edu', '9876543212', '78 Faculty Block, Bangalore', 'faculty', hashMember]);
     await insertMember.run(['Rahul Verma', 'rahul@college.edu', '9876543213', '23 Hostel Wing B, Chennai', 'student', hashMember]);
-    await insertMember.run(['Sneha Gupta', 'sneha@college.edu', '9876543214', '56 PG Block, Hyderabad', 'public', hashMember]);
+    await insertMember.run(['Sneha Gupta', 'sneha@college.edu', '9876543214', '56 PG Block, Hyderabad', 'student', hashMember]);
     await insertMember.finalize();
 
     // Seed Borrow Records
@@ -145,12 +145,12 @@ async function setupDatabase() {
     // Seed Fine
     await db.run('INSERT INTO fines (record_id, member_id, amount, paid) VALUES (?, ?, ?, ?)', [3, 1, 32.00, 0]);
 
-    console.log('✓ Seed data inserted');
-    console.log('\n🎉 SQLite database setup complete! Run: npm start\n');
+    console.log('Seed data inserted');
+    console.log('\nSQLite database setup complete! Run: npm start\n');
     await db.close();
 
   } catch (err) {
-    console.error('✗ Error:', err);
+    console.error('Error:', err);
   }
 }
 

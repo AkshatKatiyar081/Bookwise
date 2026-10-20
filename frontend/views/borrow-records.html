@@ -106,7 +106,7 @@
       <div ng-if="returnResult" style="margin-top: 16px;">
         <div class="alert alert-success">{{returnResult.message}}</div>
         <div ng-if="returnResult.fine_amount > 0" class="alert alert-warning">
-          ⚠️ This book was <strong>{{returnResult.days_overdue}} days</strong> overdue.
+          This book was <strong>{{returnResult.days_overdue}} days</strong> overdue.
           A fine of <strong>₹{{returnResult.fine_amount}}</strong> has been charged.
         </div>
         <div class="modal-actions">
