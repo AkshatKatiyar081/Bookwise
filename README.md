@@ -1,10 +1,10 @@
-# 📚 Bookwise — Library Management System
+#  Bookwise — Library Management System
 
 > A full-stack college library management system built with Node.js, Express, AngularJS, and SQLite.
 
 ---
 
-## 🗂️ Table of Contents
+##  Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
@@ -26,7 +26,7 @@
 
 ## Features
 
-### 👨‍💼 Admin / Librarian
+###  Admin / Librarian
 - Dashboard with live stats — total books, members, active borrows, overdue books, and fine collection summary
 - Full **CRUD** for books and members
 - Issue and return books, track borrow records
@@ -34,13 +34,13 @@
 - View and mark **fines** as paid
 - Auto-detection of overdue records on every dashboard load
 
-### 👤 Member
+###  Member
 - Personal dashboard — active borrows, upcoming due dates, outstanding fines
 - Browse the book **catalog** with availability status
 - Reserve unavailable books
 - View personal fine history
 
-### 🔐 Auth
+###  Auth
 - JWT-based authentication (stored in `localStorage`)
 - Role-based routing — admin and member see separate navigation and dashboards
 - Password hashing with `bcryptjs`
